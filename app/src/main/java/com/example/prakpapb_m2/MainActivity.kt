@@ -1,6 +1,7 @@
 package com.example.prakpapb_m2
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -30,6 +32,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -63,6 +67,7 @@ fun MyScreen() {
     var inputName by remember { mutableStateOf("") }
     var nim by remember { mutableStateOf("") }
     var inputNim by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -102,7 +107,7 @@ fun MyScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         // Name TextField
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -125,7 +130,7 @@ fun MyScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         // NIM TextField
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -152,8 +157,17 @@ fun MyScreen() {
             onClick = {
                 name = inputName
                 nim = inputNim
+                Toast.makeText(
+                    context,
+                    "Name: $name, NIM: $nim",
+                    Toast.LENGTH_SHORT
+                ).show()
             },
-            modifier = Modifier.padding(vertical = 4.dp)
+            enabled = inputName.isNotBlank() && inputNim.isNotBlank(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (inputName.isNotBlank() && inputNim.isNotBlank()) MaterialTheme.colorScheme.primary else Color.Gray
+            ),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Submit")
         }
